@@ -7,30 +7,25 @@ import (
 	"io"
 	"io/fs"
 	"log"
+	"net/http"
 )
 
-//go:embed frontend/*
+//go:embed frontend/build/*
 var FS embed.FS
 
 func init() {
-	router.E.GET("/*path", func(c *gin.Context) {
-		path := c.Request.URL.Path
-	start:
-		path = "frontend/build" + path
-		f, e := FS.Open(path)
+	fe, e := fs.Sub(FS, "frontend/build")
+	if e != nil {
+		log.Fatal(e)
+	}
+	router.E.StaticFS("/", http.FS(fe))
+	router.E.NoRoute(func(c *gin.Context) {
+		f, e := fe.Open("index.html")
 		if e != nil {
-			if _, ok := e.(*fs.PathError); ok {
-				path = "/index.html"
-				goto start
-			}
-
 			log.Println(e)
-			c.Status(500)
 			return
 		}
 		defer f.Close()
-
 		_, _ = io.Copy(c.Writer, f)
-		c.Status(200)
 	})
 }
