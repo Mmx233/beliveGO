@@ -8,7 +8,8 @@ import (
 var E *gin.Engine
 
 func init() {
+	gin.SetMode(gin.ReleaseMode)
 	E = gin.Default()
-	E.Use(middlewares.Secure())
+	E.Use(middlewares.Secure(), middlewares.GZIP())
 	//G := E.Group("/api")
 }
