@@ -3,7 +3,7 @@ module github.com/Mmx233/beliveGO
 go 1.18
 
 require (
-	github.com/Mmx233/secure v0.1.2
+	github.com/Mmx233/secure v0.1.3
 	github.com/gin-gonic/gin v1.7.7
 )
 

@@ -10,7 +10,5 @@ var E *gin.Engine
 func init() {
 	E = gin.Default()
 	E.Use(middlewares.Secure())
-	G := E.Group("/api")
-
-	E.GET("/")
+	//G := E.Group("/api")
 }
