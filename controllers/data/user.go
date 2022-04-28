@@ -4,8 +4,10 @@ import (
 	"errors"
 	"github.com/Mmx233/beliveGO/controllers"
 	"github.com/Mmx233/beliveGO/models/form"
+	"github.com/Mmx233/beliveGO/modules/cache"
 	"github.com/Mmx233/tool"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 func Avatar(c *gin.Context) {
@@ -14,11 +16,16 @@ func Avatar(c *gin.Context) {
 		controllers.CallBack.Error(c, 1, nil)
 		return
 	}
+	url, e0 := cache.Avatar.Read(f.UID)
+	if e0 == nil {
+		controllers.CallBack.Success(c, url)
+		return
+	}
 	_, res, e := tool.HTTP.Get(&tool.GetRequest{
 		Url:    "https://api.bilibili.com/x/space/acc/info",
 		Header: nil,
 		Query: map[string]interface{}{
-			"mid": f.MID,
+			"mid": f.UID,
 		},
 		Redirect: true,
 	})
@@ -30,6 +37,9 @@ func Avatar(c *gin.Context) {
 		controllers.CallBack.Error(c, 2, errors.New(res["message"].(string)))
 		return
 	}
-
-	controllers.CallBack.Success(c, res["data"].(map[string]interface{})["face"])
+	url = res["data"].(map[string]interface{})["face"].(string)
+	if e0 == cache.Nil {
+		_ = cache.Avatar.Cache(f.UID, url, time.Hour*24)
+	}
+	controllers.CallBack.Success(c, url)
 }

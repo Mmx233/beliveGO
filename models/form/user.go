@@ -1,5 +1,5 @@
 package form
 
 type Avatar struct {
-	MID uint `json:"mid" form:"mid" binding:"required,min=1"`
+	UID uint `json:"uid" form:"uid" binding:"required,min=1"`
 }
