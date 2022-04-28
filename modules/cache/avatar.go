@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-type AvatarCache struct {
+type avatarCache struct {
 	URL     string
 	Expires int64
 }
@@ -25,7 +25,7 @@ var Avatar = avatar{
 }
 
 func (a *avatar) Cache(uid uint, url string, valid time.Duration) error {
-	d, _ := json.Marshal(&AvatarCache{
+	d, _ := json.Marshal(&avatarCache{
 		URL:     url,
 		Expires: time.Now().Add(valid).Unix(),
 	})
@@ -47,7 +47,7 @@ func (a *avatar) Read(uid uint) (string, error) {
 		return "", e
 	}
 	defer f.Close()
-	var data AvatarCache
+	var data avatarCache
 	e = json.NewDecoder(f).Decode(&data)
 	if e != nil {
 		return "", e
