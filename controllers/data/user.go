@@ -7,6 +7,7 @@ import (
 	"github.com/Mmx233/beliveGO/modules/cache"
 	"github.com/Mmx233/tool"
 	"github.com/gin-gonic/gin"
+	"strings"
 	"time"
 )
 
@@ -37,7 +38,8 @@ func Avatar(c *gin.Context) {
 		controllers.CallBack.Error(c, 2, errors.New(res["message"].(string)))
 		return
 	}
-	url = res["data"].(map[string]interface{})["face"].(string)
+	url = strings.TrimPrefix(res["data"].(map[string]interface{})["face"].(string), "http:")
+	url = strings.TrimPrefix(url, "https:")
 	if e0 == cache.Nil {
 		_ = cache.Avatar.Cache(f.UID, url, time.Hour*24)
 	}
