@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/Mmx233/secure v0.1.3
 	github.com/Mmx233/tool v0.6.2
+	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/gzip v0.0.5
 	github.com/gin-gonic/gin v1.7.7
 )

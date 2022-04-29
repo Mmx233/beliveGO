@@ -12,5 +12,6 @@ func init() {
 	E = gin.Default()
 	E.Use(middlewares.Secure(), middlewares.GZIP())
 	G := E.Group("/api")
+	G.Use(middlewares.Cors(), middlewares.Options())
 	routerUser(G.Group("/user"))
 }
