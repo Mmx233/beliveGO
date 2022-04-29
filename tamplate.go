@@ -8,6 +8,7 @@ import (
 	"io/fs"
 	"log"
 	"net/http"
+	"strings"
 )
 
 //go:embed frontend/build/*
@@ -18,7 +19,25 @@ func init() {
 	if e != nil {
 		log.Fatal(e)
 	}
-	router.E.StaticFS("/", http.FS(fe))
+	fileServer := http.StripPrefix("/", http.FileServer(http.FS(fe)))
+	router.E.Use(func(c *gin.Context) {
+		path := strings.TrimPrefix(c.Request.URL.Path, "/")
+		if path == "" || c.FullPath() == "" {
+			path = "index.html"
+		}
+		f, e := fe.Open(path)
+		if e != nil {
+			if _, ok := e.(*fs.PathError); ok {
+				return
+			}
+			c.AbortWithStatus(500)
+			log.Println(e)
+			return
+		}
+		_ = f.Close()
+		fileServer.ServeHTTP(c.Writer, c.Request)
+		c.Abort()
+	})
 	router.E.NoRoute(func(c *gin.Context) {
 		f, e := fe.Open("index.html")
 		if e != nil {
