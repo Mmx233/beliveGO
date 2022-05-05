@@ -6,5 +6,5 @@ import (
 )
 
 func GZIP() gin.HandlerFunc {
-	return gzip.Gzip(gzip.DefaultCompression)
+	return gzip.Gzip(gzip.DefaultCompression, gzip.WithExcludedPaths([]string{"/api/"}))
 }
