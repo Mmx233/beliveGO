@@ -2,7 +2,7 @@ package RateLimit
 
 import "time"
 
-var BiApi = make(chan bool, 55)
+var BiApi = make(chan bool, 8)
 
 func init() {
 	go func() {
