@@ -28,7 +28,6 @@ func Avatar(c *gin.Context) {
 		Query: map[string]interface{}{
 			"mid": f.UID,
 		},
-		Redirect: true,
 	})
 	if e != nil {
 		controllers.CallBack.Error(c, 5, e)
