@@ -2,11 +2,16 @@ package RateLimit
 
 import "time"
 
-var BiApi = make(chan bool)
+var BiApi = make(chan bool, 55)
 
 func init() {
 	go func() {
-		BiApi <- true
-		time.Sleep(time.Second + time.Millisecond*100)
+		for i := 0; i < cap(BiApi); i++ {
+			BiApi <- true
+		}
+		for {
+			BiApi <- true
+			time.Sleep(time.Second + time.Millisecond*10)
+		}
 	}()
 }
