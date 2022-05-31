@@ -13,3 +13,12 @@ func Secure() gin.HandlerFunc {
 		},
 	})
 }
+
+func ApiSecure() gin.HandlerFunc {
+	return secure.New(&secure.Config{
+		CallBack: func(c *gin.Context) {
+			controllers.CallBack.Error(c, 3, nil)
+		},
+		RateLimit: 60,
+	})
+}

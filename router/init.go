@@ -13,7 +13,7 @@ func Init(FS embed.FS) error {
 	E = gin.Default()
 	E.Use(middlewares.Secure(), middlewares.GZIP())
 	G := E.Group("/api")
-	G.Use(middlewares.Cors(), middlewares.Options())
+	G.Use(middlewares.ApiSecure(), middlewares.Cors(), middlewares.Options())
 	routerStatic(FS)
 	routerUser(G.Group("/user"))
 
