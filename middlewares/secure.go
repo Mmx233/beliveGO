@@ -11,6 +11,7 @@ func Secure() gin.HandlerFunc {
 		CallBack: func(c *gin.Context) {
 			controllers.CallBack.Error(c, 3, nil)
 		},
+		MinLimitMode: true,
 	})
 }
 
@@ -19,6 +20,7 @@ func ApiSecure() gin.HandlerFunc {
 		CallBack: func(c *gin.Context) {
 			controllers.CallBack.Error(c, 3, nil)
 		},
-		RateLimit: 60,
+		RateLimit:    60,
+		MinLimitMode: true,
 	})
 }
