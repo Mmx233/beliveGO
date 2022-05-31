@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/Mmx233/beliveGO/controllers"
 	"github.com/Mmx233/beliveGO/models/form"
+	"github.com/Mmx233/beliveGO/modules/RateLimit"
 	"github.com/Mmx233/beliveGO/modules/cache"
 	"github.com/Mmx233/tool"
 	"github.com/gin-gonic/gin"
@@ -22,6 +23,8 @@ func Avatar(c *gin.Context) {
 		controllers.CallBack.Success(c, url)
 		return
 	}
+
+	<-RateLimit.BiApi
 	_, res, e := tool.HTTP.Get(&tool.GetRequest{
 		Url:    "https://api.bilibili.com/x/space/acc/info",
 		Header: nil,
