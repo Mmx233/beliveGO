@@ -25,6 +25,14 @@ func Avatar(c *gin.Context) {
 	}
 
 	<-RateLimit.BiApi
+	if len(RateLimit.BiApi) <= 1 {
+		url, e0 = cache.Avatar.Read(f.UID)
+		if e0 == nil {
+			controllers.CallBack.Success(c, url)
+			return
+		}
+	}
+
 	_, res, e := tool.HTTP.Get(&tool.GetRequest{
 		Url:    "https://api.bilibili.com/x/space/acc/info",
 		Header: nil,
