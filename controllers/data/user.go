@@ -51,7 +51,7 @@ func Avatar(c *gin.Context) {
 	url = strings.TrimPrefix(res["data"].(map[string]interface{})["face"].(string), "http:")
 	url = strings.TrimPrefix(url, "https:")
 	if e0 == cache.Nil {
-		_ = cache.Avatar.Cache(f.UID, url, time.Hour*24)
+		_ = cache.Avatar.Cache(f.UID, url, time.Hour*24*3)
 	}
 	controllers.CallBack.Success(c, url)
 }
